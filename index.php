@@ -1,8 +1,22 @@
 <?php
-$s = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
-
+// $s = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~';
 $min=8;
 $max=32;
+$range_ascii_max = 126;
+$range_ascii_min = 32;
+$pswd_len = intval( $_POST["pswdlen"]);
+
+$char_array = [];
+
+function pswdGenerator($min_ascii,$max_ascii,$pswd_len){
+  $char_array = [];
+  do{
+    $index = rand($min_ascii,$max_ascii);
+    $char_array[] = chr($index);
+  }while(count($char_array) < $pswd_len);
+  return $char_array;
+}
+
 
 ?>
 
@@ -20,6 +34,7 @@ $max=32;
   <link rel="stylesheet" href="css/style.css">
   <title>PHP Strong Password Generator</title>
 </head>
+
 <body>
   <div class="container-lf my-5">
     <div class="row row-cols-1 align-items-center " >
@@ -31,7 +46,7 @@ $max=32;
         <form action="index.php" method="POST">
         <div class="row row-cols-2 my-3">
           <label for="pswdlen">Scegliere una lunghezza:</label>
-          <input type="number" id="pswdlen" min="8" max="32" require>
+          <input type="number" id="pswdlen" name="pswdlen" min="8" max="32" require>
         </div>
         <div class="row my-3">
           <div class="col col-4">
@@ -45,6 +60,9 @@ $max=32;
         </div>
         </form>
         
+        <div class="alert alert-warning" role="alert">
+          <?php echo implode("",pswdGenerator($range_ascii_min,$range_ascii_max,$pswd_len)); ?>
+        </div>
       </div>
     </div >
   </div>
